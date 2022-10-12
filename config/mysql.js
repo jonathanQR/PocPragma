@@ -1,6 +1,5 @@
 const { Sequelize } = require("sequelize");
 
-const personaModel= require('../app/models/person.model')
 
 const database = process.env.MYSQL_DATABASE;
 const user = process.env.MYSQL_USER;
@@ -11,13 +10,20 @@ const sequelize = new Sequelize(database, user, password, {
   dialect: 'mysql',
 });
 
-const persona = personaModel(sequelize,Sequelize);
-
-sequelize.sync({force:false})
-.then(()=>{
-    console.log('Tablas sincronizadas')
-})
 
 
+const dbConnectMySQL = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("MySQL connected");
+    await sequelize.sync({logging:false}).then((a)=>{
+      console.log("listo")
+    })
+  } catch (e) {
+    console.log("MySQL ERROR connected", e);
+  }
+};
 
-module.exports = { sequelize, persona };
+
+
+module.exports = { sequelize, dbConnectMySQL };

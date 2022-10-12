@@ -1,11 +1,11 @@
-const {persona} = require('../../config/mysql');
+const {Person} = require('../models/person.model');
 const {handleErrorResponse} = require('../helpers/handleError');
 
 
 const checkDocument = async (req,res,next)=>{
     try {
         let document = req.body.document;
-        const response = await persona.findAll({where:{document:document}});
+        const response = await Person.findAll({where:{document:document}});
         if(response.length===0){
             next();
         }else{
@@ -19,7 +19,9 @@ const checkDocument = async (req,res,next)=>{
 const checkPersonExist = async (req,res,next)=>{
     try {
         let id = req.params.id;
-        const response = await persona.findAll({where:{id:id}});
+        console.log(id)
+        const response = await Person.findByPk(id);
+        console.log(response)
         if(response.length===0){
             httpError(res, error);            
         }else{

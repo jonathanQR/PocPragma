@@ -1,17 +1,18 @@
 const router = require('express').Router();
-const {getPersonas, getPersona,getPersonaByDocument, createPersona,update} = require('../controllers/person.Controller');
+const {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson} = require('../controllers/person.Controller');
 const {validateCreate,validateUpdate}= require('../validators/person.validator');
 const {checkDocument,checkPersonExist} = require('../middleware/person.middleware')
 
-router.get('/',getPersonas);
+router.get('/',getAll);
 
-router.get('/:id',getPersona);
+router.get('/:id',getPerson);
 
-router.get('/document/:document',getPersonaByDocument);
+router.get('/document/:document',getPersonByDocument);
 
-router.post('/',validateCreate,checkDocument,createPersona);
+router.post('/',validateCreate,checkDocument,createPerson);
 
 router.put('/:id',checkPersonExist,validateUpdate,update);
 
+router.delete('/:id',checkPersonExist,deletePerson);
 
 module.exports=router;

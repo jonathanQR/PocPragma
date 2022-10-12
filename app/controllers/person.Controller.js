@@ -1,9 +1,9 @@
-const {persona} = require('../../config/mysql');
+const {Person} = require('../models/person.model');
 const {httpError} =require('../helpers/handleError')
 
 
-const getPersonas = async(req,res)=>{
-    const response =await persona.findAll();
+const getAll = async(req,res)=>{
+    const response =await Person.findAll();
     try{
         res.status(200).json({
             data:response,
@@ -14,10 +14,10 @@ const getPersonas = async(req,res)=>{
     }
 }
 
-const getPersona = async(req,res)=>{
+const getPerson = async(req,res)=>{
     try {
         let id = req.params.id;        
-        const response = await persona.findByPk(id);
+        const response = await Person.findByPk(id);
 
         if(!response){
             res.status(404).json({
@@ -39,11 +39,11 @@ const getPersona = async(req,res)=>{
     }
 }
 
-const getPersonaByDocument = async(req,res)=>{
+const getPersonByDocument = async(req,res)=>{
     try {
         let document = req.params.document;
         console.log(document)
-        const response = await persona.findAll({where:{document:document}});
+        const response = await Person.findAll({where:{document:document}});
         console.log(typeof(response))
         if(response.length===0){
             res.status(404).json({
@@ -65,11 +65,11 @@ const getPersonaByDocument = async(req,res)=>{
     }
 }
 
-const createPersona = async(req,res)=>{    
+const createPerson = async(req,res)=>{    
     try {
         const data = req.body;
         data.documentType=data.documentType.toUpperCase();
-        const newPersona = await persona.create(req.body);
+        const newPersona = await Person.create(req.body);
         res.status(201).json({
             status:201,
             data:newPersona,
@@ -83,7 +83,7 @@ const createPersona = async(req,res)=>{
 const update =async(req,res)=>{
     try {
         let id = req.params.id;        
-        const oldPerson = await persona.findByPk(id);
+        const oldPerson = await Person.findByPk(id);
         await oldPerson.update(req.body);
         await oldPerson.save();
         res.status(201).json({
@@ -95,4 +95,19 @@ const update =async(req,res)=>{
         httpError(res, error);
     }
 }
-module.exports= {getPersonas, getPersona,getPersonaByDocument, createPersona,update}
+
+const deletePerson = async(req,res)=>{
+    try {
+        let id = req.params.id;        
+        const person = await Person.findByPk(id);
+        await person.destroy();
+        res.status(201).json({
+            status:201,
+            data:person,
+            msg:'Persona Eliminada satisfactoriamente'
+        })
+    } catch (error) {
+        httpError(res, error);
+    }
+}
+module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson}
