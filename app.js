@@ -11,9 +11,10 @@ require('./config/mysql.js');
 
 
 const PORT = process.env.PORT || 3000
-app.use(cors())
-app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
 
 app.use('/api',apiRouter);
 

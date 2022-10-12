@@ -1,6 +1,6 @@
 const { Sequelize } = require("sequelize");
 
-const personaModel= require('./../app/models/persona.model')
+const personaModel= require('../app/models/person.model')
 
 const database = process.env.MYSQL_DATABASE;
 const user = process.env.MYSQL_USER;

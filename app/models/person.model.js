@@ -14,11 +14,12 @@ module.exports=(sequelize,type)=>{
             allowNull:false
         },
         documentType:{
-            type: type.STRING,
+            type: type.ENUM('TI','CC','RC','CE','NIP','NUIP'),
             allowNull:false
         },
         document:{
             type: type.STRING,
+            unique: true,
             allowNull:false
         },
         age:{
@@ -27,10 +28,6 @@ module.exports=(sequelize,type)=>{
         },
         city:{
             type: type.STRING,
-            allowNull:false
-        },
-        img:{
-            type: type.BLOB,
             allowNull:false
         }
     })

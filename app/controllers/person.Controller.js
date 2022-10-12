@@ -16,10 +16,9 @@ const getPersonas = async(req,res)=>{
 
 const getPersona = async(req,res)=>{
     try {
-        let id = req.params.id;
-        console.log(id)
+        let id = req.params.id;        
         const response = await persona.findByPk(id);
-        console.log(typeof(response))
+
         if(!response){
             res.status(404).json({
                 status: 404,
@@ -66,5 +65,34 @@ const getPersonaByDocument = async(req,res)=>{
     }
 }
 
+const createPersona = async(req,res)=>{    
+    try {
+        const data = req.body;
+        data.documentType=data.documentType.toUpperCase();
+        const newPersona = await persona.create(req.body);
+        res.status(201).json({
+            status:201,
+            data:newPersona,
+            msg:'Persona creada satisfactoriamente'
+        })
+    } catch (error) {
+        httpError(res, error);
+    }
+}
 
-module.exports= {getPersonas, getPersona,getPersonaByDocument}
+const update =async(req,res)=>{
+    try {
+        let id = req.params.id;        
+        const oldPerson = await persona.findByPk(id);
+        await oldPerson.update(req.body);
+        await oldPerson.save();
+        res.status(201).json({
+            status:201,
+            data:oldPerson,
+            msg:'Persona modificada satisfactoriamente'
+        })
+    } catch (error) {
+        httpError(res, error);
+    }
+}
+module.exports= {getPersonas, getPersona,getPersonaByDocument, createPersona,update}

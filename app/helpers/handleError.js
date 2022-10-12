@@ -8,4 +8,10 @@ const httpError = (res, err) => {
     })
 }
 
-module.exports = { httpError }
+const handleErrorResponse = (res, message = "Algo ocurrio", code = 401) => {
+    console.log("Error", message);
+    res.status(code);
+    res.send({ error: message });
+  };
+
+module.exports = { httpError, handleErrorResponse }
