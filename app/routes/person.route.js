@@ -5,7 +5,7 @@ const {checkDocument,checkPersonExist} = require('../middleware/person.middlewar
 
 router.get('/',getAll);
 
-router.get('/:id',getPerson);
+router.get('/:id',checkPersonExist,getPerson);
 
 router.get('/document/:document',getPersonByDocument);
 

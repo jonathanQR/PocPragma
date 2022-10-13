@@ -21,7 +21,7 @@ const checkPersonExist = async (req,res,next)=>{
         let id = req.params.id;
         console.log(id)
         const response = await Person.findByPk(id);
-        console.log(response)
+        
         if(response.length===0){
             httpError(res, error);            
         }else{

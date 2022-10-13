@@ -1,9 +1,10 @@
 const {Person} = require('../models/person.model');
+const personService = require('../services/person.service')
 const {httpError} =require('../helpers/handleError')
 
 
 const getAll = async(req,res)=>{
-    const response =await Person.findAll();
+    const response =await personService.getAll();
     try{
         res.status(200).json({
             data:response,
@@ -16,8 +17,9 @@ const getAll = async(req,res)=>{
 
 const getPerson = async(req,res)=>{
     try {
-        let id = req.params.id;        
-        const response = await Person.findByPk(id);
+        let id = req.params.id;
+
+        const response = await personService.getPerson(id);
 
         if(!response){
             res.status(404).json({
@@ -42,9 +44,9 @@ const getPerson = async(req,res)=>{
 const getPersonByDocument = async(req,res)=>{
     try {
         let document = req.params.document;
-        console.log(document)
-        const response = await Person.findAll({where:{document:document}});
-        console.log(typeof(response))
+        
+        const response = await personService.getPersonByDocument(document);
+        
         if(response.length===0){
             res.status(404).json({
                 status: 404,
@@ -66,13 +68,11 @@ const getPersonByDocument = async(req,res)=>{
 }
 
 const createPerson = async(req,res)=>{    
-    try {
-        const data = req.body;
-        data.documentType=data.documentType.toUpperCase();
-        const newPersona = await Person.create(req.body);
+    try {       
+        const response = await personService.createPerson(req.body);
         res.status(201).json({
             status:201,
-            data:newPersona,
+            data:response,
             msg:'Persona creada satisfactoriamente'
         })
     } catch (error) {
@@ -83,12 +83,10 @@ const createPerson = async(req,res)=>{
 const update =async(req,res)=>{
     try {
         let id = req.params.id;        
-        const oldPerson = await Person.findByPk(id);
-        await oldPerson.update(req.body);
-        await oldPerson.save();
+        const response = await personService.update(id,req.body)
         res.status(201).json({
             status:201,
-            data:oldPerson,
+            data:response,
             msg:'Persona modificada satisfactoriamente'
         })
     } catch (error) {
@@ -99,15 +97,15 @@ const update =async(req,res)=>{
 const deletePerson = async(req,res)=>{
     try {
         let id = req.params.id;        
-        const person = await Person.findByPk(id);
-        await person.destroy();
+        const response = await personService.deletePerson(id);
         res.status(201).json({
             status:201,
-            data:person,
+            data:response,
             msg:'Persona Eliminada satisfactoriamente'
         })
     } catch (error) {
         httpError(res, error);
     }
 }
+
 module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson}
