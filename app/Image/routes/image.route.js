@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {upload} = require('../helpers/handleStore')
+const {upload} = require('../../helpers/handleStore')
 const {chechImageExist}= require('../middleware/image.middleware')
 const {createImage,showAll,getById,getByIdPerson,deleteByIdPerson,updateByIdPerson}=require('../controllers/image.Controller')
 

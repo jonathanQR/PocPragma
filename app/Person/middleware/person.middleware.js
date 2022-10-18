@@ -1,5 +1,5 @@
-const {Person} = require('../models/person.model');
-const {handleErrorResponse,httpError} = require('../helpers/handleError');
+const {Person} = require('../model/person.model');
+const {handleErrorResponse,httpError} = require('../../helpers/handleError');
 
 
 const checkDocument = async (req,res,next)=>{

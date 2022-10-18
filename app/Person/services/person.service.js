@@ -1,5 +1,5 @@
-const {Person} = require('../models/person.model');
-const {httpError} =require('../helpers/handleError')
+const {Person} = require('../model/person.model');
+const {httpError} =require('../../helpers/handleError')
 
 exports.getAll = async() =>{
     try {

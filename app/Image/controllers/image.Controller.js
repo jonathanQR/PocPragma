@@ -1,5 +1,5 @@
 const imageService = require('../services/image.service')
-const {httpError} =require('../helpers/handleError')
+const {httpError} =require('../../helpers/handleError')
 
 const showAll = async(req,res)=>{    
     try {       

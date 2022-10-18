@@ -1,5 +1,5 @@
-const image = require('../models/image.model')
-const {handleErrorResponse,httpError} = require('../helpers/handleError');
+const image = require('../model/image.model')
+const {handleErrorResponse,httpError} = require('../../helpers/handleError');
 
 const chechImageExist = async (req,res,next)=>{
     try {

@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors')
 
-const {dbConnectMySQL}=require('./config/mysql');
-const { dbConnect } = require('./config/mongo');
+const {dbConnectMySQL}=require('./app/Person/db/mysql');
+const { dbConnect } = require('./app/Image/db/mongo');
 
 const apiRouter = require('./app/routes/index');
 

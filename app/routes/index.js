@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
 // const fs = require('fs')
-const userRouter =require('./person.route');
-const imageRouter= require('./image.route');
+const personRouter =require('../Person/routes/person.route');
+const imageRouter= require('../Image/routes/image.route');
 
 
-router.use('/person',userRouter);
+router.use('/person',personRouter);
 router.use('/image',imageRouter);
 
 // const pathRouter = `${__dirname}`

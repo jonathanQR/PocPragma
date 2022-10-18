@@ -1,5 +1,5 @@
 const personService = require('../services/person.service')
-const {httpError} =require('../helpers/handleError')
+const {httpError} =require('../../helpers/handleError')
 
 
 const getAll = async(req,res)=>{

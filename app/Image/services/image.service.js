@@ -1,5 +1,5 @@
-const image = require('../models/image.model')
-const{uploadFile,deleteFile}= require('../storage/uploadS3');
+const image = require('../model/image.model')
+const{uploadFile,deleteFile}= require('../../storage/uploadS3');
 const fs=require('fs-extra');
 const util = require('util')
 const unlinkFile = util.promisify(fs.unlink)
