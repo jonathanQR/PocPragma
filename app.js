@@ -2,7 +2,10 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const express = require('express');
 const cors = require('cors')
-const {dbConnectMySQL}=require('./config/mysql.js');
+
+const {dbConnectMySQL}=require('./config/mysql');
+const { dbConnect } = require('./config/mongo');
+
 const apiRouter = require('./app/routes/index');
 
 const app = express();
@@ -19,9 +22,10 @@ app.use(bodyParser.json());
 app.use('/api',apiRouter);
 
 app.listen(PORT,()=>{
-    console.log('Servidor arrancado');
+    console.log('Servidor iniciado');
 });
 
 
 dbConnectMySQL();
+dbConnect();
 

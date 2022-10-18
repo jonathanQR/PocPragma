@@ -17,7 +17,6 @@ const dbConnectMySQL = async () => {
     await sequelize.authenticate();
     console.log("MySQL connected");
     await sequelize.sync({logging:false}).then((a)=>{
-      console.log("listo")
     })
   } catch (e) {
     console.log("MySQL ERROR connected", e);

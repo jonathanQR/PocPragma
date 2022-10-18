@@ -13,9 +13,7 @@ exports.getAll = async() =>{
 exports.getPerson = async(id) =>{
     try {               
         const response = await Person.findByPk(id);
-        console.log(response);
-        return response;
-        
+        return response;        
     } catch (error) {
         throw Error('Error al consultar personas')
     }
@@ -24,9 +22,7 @@ exports.getPerson = async(id) =>{
 exports.getPersonByDocument = async(document) =>{
     try {               
         const response = await Person.findAll({where:{document:document}});
-        console.log(response);
-        return response;
-        
+        return response;        
     } catch (error) {
         throw Error('Error al consultar personas')
     }
@@ -35,9 +31,7 @@ exports.getPersonByDocument = async(document) =>{
 exports.createPerson = async(person) =>{
     try {
         const response = await Person.create(person);
-        console.log(response);
-        return response;
-        
+        return response;        
     } catch (error) {
         throw Error('Error al consultar personas')
     }
@@ -48,7 +42,6 @@ exports.update = async(id,person) =>{
         const response = await Person.findByPk(id);
         await response.update(person);
         await response.save();        
-        console.log(response)
         return response;
         
     } catch (error) {
@@ -59,6 +52,17 @@ exports.update = async(id,person) =>{
 exports.deletePerson = async(id) =>{
     try {
         const response = await Person.findByPk(id);
+        await response.destroy();
+        return response;
+        
+    } catch (error) {
+        throw Error('Error al consultar personas')
+    }
+}
+
+exports.deletePersonByDocuyment = async(document) =>{
+    try {
+        const response = await Person.findOne({document:document});
         await response.destroy();
         return response;
         

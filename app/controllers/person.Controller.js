@@ -1,4 +1,3 @@
-const {Person} = require('../models/person.model');
 const personService = require('../services/person.service')
 const {httpError} =require('../helpers/handleError')
 
@@ -108,4 +107,18 @@ const deletePerson = async(req,res)=>{
     }
 }
 
-module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson}
+const deletePersonByDocument = async(req,res)=>{
+    try {
+        let document = req.params.document;        
+        const response = await personService.deletePersonByDocuyment(document);
+        res.status(201).json({
+            status:201,
+            data:response,
+            msg:'Persona Eliminada satisfactoriamente'
+        })
+    } catch (error) {
+        httpError(res, error);
+    }
+}
+
+module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument}

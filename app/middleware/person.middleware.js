@@ -1,5 +1,5 @@
 const {Person} = require('../models/person.model');
-const {handleErrorResponse} = require('../helpers/handleError');
+const {handleErrorResponse,httpError} = require('../helpers/handleError');
 
 
 const checkDocument = async (req,res,next)=>{
@@ -32,6 +32,22 @@ const checkPersonExist = async (req,res,next)=>{
     }
 }
 
+const checkPersonExistBydocument = async (req,res,next)=>{
+    try {
+        let document = req.params.document;
+        console.log(document)
+        const response = await Person.findOne({where:{document:document}});
+        
+        if(response.length===0){
+            httpError(res, error);            
+        }else{
+            next();
+        }
+    } catch (error) {
+        handleErrorResponse(res,"El id ingresado no fue encontrado",401);
+    }
+}
 
 
-module.exports={checkDocument,checkPersonExist}
+
+module.exports={checkDocument,checkPersonExist,checkPersonExistBydocument}
