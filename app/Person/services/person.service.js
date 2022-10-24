@@ -1,12 +1,16 @@
 const {Person} = require('../model/person.model');
 const {httpError} =require('../../helpers/handleError')
+const {responseHandle} =require('../../helpers/handleResponse')
+
 
 exports.getAll = async() =>{
+    
     try {
-        const response = await Person.findAll();
+        const response = await Person.findAll();        
         return response;
     } catch (error) {
         throw Error('Error al consultar personas')
+        
     }
 }
 
