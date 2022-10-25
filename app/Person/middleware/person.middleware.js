@@ -1,6 +1,6 @@
 const {Person} = require('../model/person.model');
 const {handleErrorResponse,httpError} = require('../../helpers/handleError');
-
+const {Ok,NotFound,SendError,AlreadyExists }= require('../../shared/http.response')
 
 const checkDocument = async (req,res,next)=>{
     try {
@@ -9,26 +9,25 @@ const checkDocument = async (req,res,next)=>{
         if(response.length===0){
             next();
         }else{
-            httpError(res, error);
+            AlreadyExists(res,"documento ya registrado")
         }
     } catch (error) {
-        handleErrorResponse(res,"El Documento ya esta registrado",401);
+        SendError(res, error);
     }
 }
 
 const checkPersonExist = async (req,res,next)=>{
     try {
         let id = req.params.id;
-        console.log(id)
-        const response = await Person.findByPk(id);
-        
-        if(response.length===0){
-            httpError(res, error);            
+        const response = await Person.findByPk(id);        
+        if(response==null||response.length===0){
+            NotFound(res, "ID no registrado");           
         }else{
             next();
         }
     } catch (error) {
-        handleErrorResponse(res,"El id ingresado no fue encontrado",401);
+        console.log(error)
+        SendError(res, error);
     }
 }
 
@@ -38,13 +37,13 @@ const checkPersonExistBydocument = async (req,res,next)=>{
         console.log(document)
         const response = await Person.findOne({where:{document:document}});
         
-        if(response.length===0){
-            httpError(res, error);            
+        if(response==null||response.length===0){
+            NotFound(res, "Documento no registrado");            
         }else{
             next();
         }
     } catch (error) {
-        handleErrorResponse(res,"El id ingresado no fue encontrado",401);
+        SendError(res, Error);
     }
 }
 

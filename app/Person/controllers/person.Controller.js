@@ -1,42 +1,36 @@
 const personService = require('../services/person.service')
 const {httpError} =require('../../helpers/handleError')
-
+const {Ok,NotFound,SendError }= require('../../shared/http.response')
 
 const getAll = async(req,res)=>{
-    const response =await personService.getAll();
+    
     try{
-        res.status(200).json({
-            data:response,
-            msg:null
-        });
+        const data =await personService.getAll();
+        if (data.length === 0) {
+            NotFound(res, "No existen usuarios");            
+          }
+          else{
+          Ok(res, data);
+        }
     }catch(error){
-        httpError(res,error)
+        SendError(res, error.message)
     }
 }
 
 const getPerson = async(req,res)=>{
     try {
         let id = req.params.id;
-
-        const response = await personService.getPerson(id);
-
-        if(!response){
-            res.status(404).json({
-                status: 404,
-                data: null,
-                msg: 'No existe la persona con id: '+id
-            });
+        const data = await personService.getPerson(id);
+        
+        if(!data){
+            NotFound(res, "No se pudo encontrar la persona"); 
             res.end();
         }else{
-            res.json({
-                status: 200,
-                data: response,
-                msg: null
-            });
+            Ok(res, data);
         }
         
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
@@ -47,78 +41,65 @@ const getPersonByDocument = async(req,res)=>{
         const response = await personService.getPersonByDocument(document);
         
         if(response.length===0){
-            res.status(404).json({
-                status: 404,
-                data: null,
-                msg: 'No existe la persona con documento: '+document
-            });
+            NotFound(res, "No se pudo encontrar la persona"); 
             res.end();
+            
         }else{
-            res.json({
-                status: 200,
-                data: response,
-                msg: null
-            });
+            Ok(res, data);
         }
         
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
 const createPerson = async(req,res)=>{    
     try {       
-        const response = await personService.createPerson(req.body);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Persona creada satisfactoriamente'
-        })
+        const data = await personService.createPerson(req.body);
+        Ok(res, data);
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
 const update =async(req,res)=>{
     try {
         let id = req.params.id;        
-        const response = await personService.update(id,req.body)
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Persona modificada satisfactoriamente'
-        })
+        const data = await personService.update(id,req.body)
+        Ok(res, data);
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
 const deletePerson = async(req,res)=>{
     try {
         let id = req.params.id;        
-        const response = await personService.deletePerson(id);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Persona Eliminada satisfactoriamente'
-        })
+        const data = await personService.deletePerson(id);
+        Ok(res, data);
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
 const deletePersonByDocument = async(req,res)=>{
     try {
         let document = req.params.document;        
-        const response = await personService.deletePersonByDocuyment(document);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Persona Eliminada satisfactoriamente'
-        })
+        const data = await personService.deletePersonByDocuyment(document);
+        Ok(res, data);
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
-module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument}
+const getByAge = async(req,res)=>{
+    try {
+        let age = req.params.age;        
+        const data = await personService.getByAge(age);
+        Ok(res, data);
+    } catch (error) {        
+        SendError(res, error.message)
+    }
+}
+
+module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument,getByAge}

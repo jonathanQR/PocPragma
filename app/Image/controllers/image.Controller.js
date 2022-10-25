@@ -1,88 +1,64 @@
 const imageService = require('../services/image.service')
 const {httpError} =require('../../helpers/handleError')
+const {Ok,NotFound,SendError }= require('../../shared/http.response')
 
 const showAll = async(req,res)=>{    
     try {       
-        const response = await imageService.getAll();
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Lista de imagenes'
-        })
+        const data = await imageService.getAll();
+        if (data.length === 0) {
+            NotFound(res, "No existen imagenes");            
+          }
+          else{
+          Ok(res, data);
+        }
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
 const createImage = async(req,res)=>{    
     try {       
-        const response = await imageService.createImage(req.file,req.body.idPerson);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Imagen guardada satisfactoriamente'
-        })
-    } catch (error) {
-        httpError(res, error);
+        const data = await imageService.createImage(req.file,req.body.personDocument);
+        Ok(res,data);
+    } catch (error) {        
+        SendError(res, error.message)
     }
 }
 
-const getById = async(req,res)=>{    
+
+const getByDocumentPerson = async(req,res)=>{    
     try {       
-        const response = await imageService.getImageById(req.params.id);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Imagen guardada satisfactoriamente'
-        })
+        const data = await imageService.getByDocumentPerson(req.params.personDocument);
+        if(!data){
+            NotFound(res, "No se pudo encontrar la imnage"); 
+            res.end();            
+        }else{
+            Ok(res, data);
+        }
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
     }
 }
 
-const getByIdPerson = async(req,res)=>{    
-    try {       
-        const response = await imageService.getByIdPerson(req.params.idPerson);
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Imagen guardada satisfactoriamente'
-        })
-    } catch (error) {
-        httpError(res, error);
-    }
-}
-
-const deleteByIdPerson = async(req,res)=>{    
-    try {  
-        console.log(req.params.idPerson)     
-        const response = await imageService.deleteByIdPerson(req.params.idPerson);
-        
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Imagen guardada satisfactoriamente'
-        })
-    } catch (error) {
-        httpError(res, error);
-    }
-}
-
-
-const updateByIdPerson = async(req,res)=>{    
+const deleteByDocumentPerson = async(req,res)=>{    
     try {              
-        const response = await imageService.updateByIdPerson(req.file,req.params.idPerson);
-        
-        res.status(201).json({
-            status:201,
-            data:response,
-            msg:'Imagen guardada satisfactoriamente'
-        })
+        const data = await imageService.deleteByDocument(req.params.personDocument);        
+        Ok(res, data);
     } catch (error) {
-        httpError(res, error);
+        SendError(res, error.message)
+    }
+}
+
+
+const updateByDocumentPerson = async(req,res)=>{    
+    try {              
+        const data = await imageService.updateByDocumentPerson(req.file,req.params.personDocument);
+        Ok(res, data);
+    } catch (error) {
+        SendError(res, error.message)
     }
 }
 
 
 
-module.exports={createImage,showAll,getById,getByIdPerson,deleteByIdPerson,updateByIdPerson}
+module.exports={createImage,showAll,getByDocumentPerson,deleteByDocumentPerson,updateByDocumentPerson}

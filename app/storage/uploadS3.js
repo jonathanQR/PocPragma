@@ -29,7 +29,7 @@ exports.uploadFile=async(file)=>{
     const response= s3.upload(uploadParams).promise();    
     return response;
    } catch (error) {
-    console.log(error)
+    throw Error("Error al cargar imagen al S3 bucket")
    }
 }
 
@@ -40,10 +40,10 @@ exports.deleteFile=async(key)=>{
      const deleteParams={
          Bucket: bucketName,
          Key:key
-     }
+     }     
      const response= s3.deleteObject(deleteParams).promise();    
      return response;
     } catch (error) {
-     console.log(error)
+        throw Error("Error al eliminar imagen al S3 bucket")
     }
  }
