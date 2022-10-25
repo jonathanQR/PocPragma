@@ -1,7 +1,5 @@
 const {Person} = require('../model/person.model');
 const {httpError} =require('../../helpers/handleError')
-const {responseHandle} =require('../../helpers/handleResponse')
-
 
 exports.getAll = async() =>{
     
@@ -19,7 +17,7 @@ exports.getPerson = async(id) =>{
         const response = await Person.findByPk(id);
         return response;        
     } catch (error) {
-        throw Error('Error al consultar personas')
+        throw Error('Error al buscar una persona')
     }
 }
 
@@ -28,7 +26,7 @@ exports.getPersonByDocument = async(document) =>{
         const response = await Person.findAll({where:{document:document}});
         return response;        
     } catch (error) {
-        throw Error('Error al consultar personas')
+        throw Error('Error al buscar una persona')
     }
 }
 
@@ -37,7 +35,7 @@ exports.createPerson = async(person) =>{
         const response = await Person.create(person);
         return response;        
     } catch (error) {
-        throw Error('Error al consultar personas')
+        throw Error('Error al crear una persona')
     }
 }
 
@@ -49,7 +47,7 @@ exports.update = async(id,person) =>{
         return response;
         
     } catch (error) {
-        throw Error('Error al consultar personas')
+        throw Error('Error al actualizar una persona')
     }
 }
 
@@ -60,16 +58,27 @@ exports.deletePerson = async(id) =>{
         return response;
         
     } catch (error) {
-        throw Error('Error al consultar personas')
+        throw Error('Error al eliminar una persona')
     }
 }
 
 exports.deletePersonByDocuyment = async(document) =>{
-    try {
-        const response = await Person.findOne({document:document});
+    try { 
+        const response = await Person.findOne({where:{document:document}});
         await response.destroy();
         return response;
         
+    } catch (error) {
+        
+        throw Error('Error al eliminar una persona por su documento')
+    }
+}
+
+exports.getByAge = async(age)=>{
+    try {
+        console.log(lucas)
+        const response= await Person.findAll({where:{age:{ [Op.gte]: age}}})
+        return response;
     } catch (error) {
         throw Error('Error al consultar personas')
     }

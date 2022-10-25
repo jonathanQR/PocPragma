@@ -9,71 +9,52 @@ exports.getAll = async() =>{
         const response = await image.find({});        
         return response
     } catch (error) {
-        throw Error(error)
+        throw Error("Error al Consultar imagenes")
     }
 }
 
-exports.createImage = async(file,idPerson) =>{
-    try {        
+exports.createImage = async(file,personDocument) =>{
+    try {      
         const result = await uploadFile(file);
-        const response= await image.create({idPerson,Key:result.Key,Location:result.Location});
+        const response= await image.create({personDocument,Key:result.Key,Location:result.Location});
         await unlinkFile(file.path);
         return response;
     } catch (error) {
-        throw Error(error)
+        throw Error("Erro al crear una imagen")
     }
 }
 
-exports.getImageById = async(id) =>{
+
+exports.getByDocumentPerson = async(document) =>{
     try {
-        const response = await image.findOne({_id:id});
+        const response = await image.findOne({personDocument:document});
         return response;        
     } catch (error) {
-        throw Error('Sandia')
+        throw Error('Error al consultar imagen')
     }
 }
 
-exports.getByIdPerson = async(id) =>{
+exports.deleteByDocument = async(document) =>{
     try {
-        const response = await image.findOne({idPerson:id});
-        return response;        
-    } catch (error) {
-        throw Error('Sandia')
-    }
-}
-
-exports.deleteById = async(id) =>{
-    try {
-        const imageData = await image.findOne({_id:id});
+        const imageData = await image.findOne({personDocument:document});
         deleteFile(imageData.Key);
-        const response = image.deleteOne({idPerson:imageData.idPerson})
+        const response = image.deleteOne({personDocument:imageData.personDocument})
         return response;        
     } catch (error) {
-        throw Error('Sandia')
+        throw Error('Error al eliminar imagen')
     }
 }
 
-exports.deleteByIdPerson = async(id) =>{
+exports.updateByDocumentPerson = async(file,personDocument) =>{
     try {
-        const imageData = await image.findOne({idPerson:id});
-        deleteFile(imageData.Key);
-        const response = image.deleteOne({idPerson:imageData.idPerson})
-        return response;        
-    } catch (error) {
-        throw Error('Sandia')
-    }
-}
-
-exports.updateByIdPerson = async(file,idPerson) =>{
-    try {
-        const imageData = await image.findOne({idPerson:idPerson});
+        const imageData = await image.findOne({personDocument:personDocument});
         deleteFile(imageData.Key);
         const result = await uploadFile(file);          
         imageData.save();      
-        const response = image.findOneAndUpdate({idPerson:idPerson},{idPerson,Key:result.Key,Location:result.Location})
+        const response = image.findOneAndUpdate({personDocument:personDocument},{personDocument,Key:result.Key,Location:result.Location})
         return response;        
     } catch (error) {
-        throw Error(error)
+        throw Error("Error al actualizar imagen")
     }
 }
 
