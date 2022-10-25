@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument,getByAge} = require('../controllers/person.Controller');
+const {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument,getByAge,getByDocumentType} = require('../controllers/person.Controller');
 const {validateCreate,validateUpdate}= require('../validators/person.validator');
 const {checkDocument,checkPersonExist,checkPersonExistBydocument} = require('../middleware/person.middleware')
 
@@ -18,4 +18,6 @@ router.delete('/:id',checkPersonExist,deletePerson);
 router.delete('/document/:document',checkPersonExistBydocument,deletePersonByDocument);
 
 router.get('/age/:age',getByAge);
+
+router.get('/typedocument/:type',getByDocumentType)
 module.exports=router;

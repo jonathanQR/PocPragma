@@ -7,7 +7,7 @@ const getAll = async(req,res)=>{
     try{
         const data =await personService.getAll();
         if (data.length === 0) {
-            NotFound(res, "No existen usuarios");            
+            NotFound(res, "No existen Personas");            
           }
           else{
           Ok(res, data);
@@ -38,9 +38,9 @@ const getPersonByDocument = async(req,res)=>{
     try {
         let document = req.params.document;
         
-        const response = await personService.getPersonByDocument(document);
+        const data = await personService.getPersonByDocument(document);
         
-        if(response.length===0){
+        if(data.length===0){
             NotFound(res, "No se pudo encontrar la persona"); 
             res.end();
             
@@ -102,4 +102,20 @@ const getByAge = async(req,res)=>{
     }
 }
 
-module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument,getByAge}
+const getByDocumentType = async(req,res)=>{
+    try {
+        let type = req.params.type;        
+        const data = await personService.getByDocumentType(type);
+        if(data.length===0){
+            NotFound(res, "tipo de documento no registrado"); 
+            res.end();
+            
+        }else{
+            Ok(res, data);
+        }
+    } catch (error) {        
+        SendError(res, error.message)
+    }
+}
+
+module.exports= {getAll, getPerson,getPersonByDocument, createPerson,update,deletePerson,deletePersonByDocument,getByAge,getByDocumentType}

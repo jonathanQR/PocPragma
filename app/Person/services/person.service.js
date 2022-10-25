@@ -1,6 +1,6 @@
 const {Person} = require('../model/person.model');
 const {httpError} =require('../../helpers/handleError')
-
+const {Op}= require('sequelize')
 exports.getAll = async() =>{
     
     try {
@@ -76,10 +76,23 @@ exports.deletePersonByDocuyment = async(document) =>{
 
 exports.getByAge = async(age)=>{
     try {
-        console.log(lucas)
+        
         const response= await Person.findAll({where:{age:{ [Op.gte]: age}}})
         return response;
     } catch (error) {
+        console.log(error)
+        throw Error('Error al consultar personas')
+    }
+}
+
+
+exports.getByDocumentType = async(type)=>{
+    try {
+        
+        const response= await Person.findAll({where:{documentType:type}})
+        return response;
+    } catch (error) {
+        console.log(error)
         throw Error('Error al consultar personas')
     }
 }
